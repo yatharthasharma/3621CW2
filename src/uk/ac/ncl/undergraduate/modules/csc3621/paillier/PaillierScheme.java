@@ -2,11 +2,13 @@ package uk.ac.ncl.undergraduate.modules.csc3621.paillier;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 
 /**
  * This class implements the algorithms in the Paillier scheme.
  *
  * @author Changyu Dong
+ * @author Yathartha Sharma
  */
 
 public class PaillierScheme {
@@ -33,10 +35,15 @@ public class PaillierScheme {
 	 * @param m the plaintext to be encrypted
 	 * @return the ciphertext of m
 	 */
-	
+	// stop thru the iterating in bw and choose any of the big ints that you have at that point
 	public static BigInteger Enc(PublicKey pk, BigInteger m) {
-		SecureRandom secure = new SecureRandom();
-		int r = secure.nextInt();
+		ArrayList<BigInteger> x = new ArrayList<>();
+		for (long i = 0; i < m.longValue(); i++){
+			if (m.gcd(BigInteger.valueOf(i)) == BigInteger.ONE){
+				x.add(BigInteger.valueOf(i));
+			}
+		}
+		int r = x.get(new SecureRandom().nextInt(x.size())).intValue();
 		BigInteger N = pk.getN();
 		BigInteger NSqr = pk.getNSqr();
 		long l = (long) r;
